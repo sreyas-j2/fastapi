@@ -1,6 +1,6 @@
-from fastapi import HTTPException,APIRouter,status,Request,Depends,UploadFile
+from fastapi import HTTPException,APIRouter,status,Request,Depends,UploadFile,File,Form
 from fastapi.responses import FileResponse
-from ..schemas import user,SimpleModel
+from ..schemas import user,SimpleModel,userReg
 from random import randint
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
@@ -32,14 +32,16 @@ def get_user(id: int, request: Request):
     return templates.TemplateResponse('item.html', {"request": request, "users": data})
 
 @router.post('/',status_code=status.HTTP_201_CREATED)
-def create_user(form_data:SimpleModel=Depends()):
+# def create_user(user_data:userReg= Depends(userReg.convert_form)):
+def create_user(user_data:userReg=Depends()):
     with open(IMG_PATH,"wb") as file:
-        info=form_data.info.file.read()
+        info=user_data.image.file.read()
         file.write(info)
     encoding=get_encoding(IMG_PATH)
     conn,cur=get_con()
-    ret=cur.execute("""INSERT INTO users (name,email,face_encoding) VALUES (%s,%s,%s) returning *""",(form_data.name,form_data.email,list(encoding)))
+    ret=cur.execute("""INSERT INTO users (name,email,face_encoding) VALUES (%s,%s,%s)""",(user_data.name,user_data.email,list(encoding)))
     conn.commit()
+    print(ret)
     return {"data":ret}#supposed to return the modified data
 
 @router.delete('/{id}',status_code=status.HTTP_204_NO_CONTENT)

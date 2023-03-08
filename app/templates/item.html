@@ -6,32 +6,22 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
     </head>
-    <script>
-        var image=document.getElementById('imageIn');
-        console.log(image);
-        function uploadFile(){
-            console.log("uploading");
-        }
-        image.onclick=uploadFile;
-
-    </script>
     <body>
         <div class="ui container">
             <h1>Register a user:</h1><br>
             <form class="ui form" action="/users" method="post" enctype="multipart/form-data">
-                Name:
-                <div class="ui input">
-                    <input type="text" placeholder="Enter Name"  required="required" name="name">
+                <div class="inline field" >
+                    <label for="name" >Name:</label>
+                    <input type="text" placeholder="Enter the name" name="name">
+                    
                 </div>
-                <br><br>
-                Email:&nbsp;
-                <div class="ui input">
-                    <input type="email" placeholder="abc@email.com"  required="required" name="email">
+                <div class="inline field">
+                    <label for="email">Email:</label>
+                    <input type="text" placeholder="Enter the email-id" name="email">
                 </div>
-                <br><br>
-                Image:
-                <div class="ui input">
-                    <input type="file" placeholder="Search..." accept="/image/*"  required="required" name="info" id="imageIn"><br>
+                <div class="inline field">
+                    <label for="image">Image:</label>
+                    <input type="file" id="imageIn" name="image">
                 </div>
                 <br><br>
                 <button class="ui button" type="submit" id="sub">Submit</button>
@@ -55,5 +45,14 @@
                   {% endfor %}
               </table>
           </form>
+          <script>
+            var image=document.getElementById('imageIn');
+            console.log(image);
+            function uploadFile(){
+                console.log("uploading");
+            }
+            image.onclick=uploadFile;
+    
+        </script>
     </body>
 </html>
